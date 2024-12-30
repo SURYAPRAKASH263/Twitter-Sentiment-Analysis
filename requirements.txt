@@ -1,0 +1,6 @@
+Flask
+kagglehub
+sklearn
+pandas
+numpy
+scikit-learn

@@ -1,0 +1,114 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <h1> TWEET SENTIMENT ANALYSIS </h1>
+
+        <form action ="{{url_for('predict_api')}}"methods="post"></form>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tweet Sentiment Analysis</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 20px;
+                background-color: #f0f0f0; 
+            }
+            h1, h2 {
+                text-align: center;
+                color: #333;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            #tweet-input {
+                width: calc(100% - 22px);
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            #result {
+                margin-top: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+            .sentiment-image {
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              max-width: 200px; /* Adjust as needed */
+              height: auto;
+            }
+            #error-message {
+                color: red;
+                margin-top: 10px;
+                text-align: center;
+            }
+    
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Tweet Sentiment Analysis</h1>
+            <p>Enter a tweet below to analyze its sentiment:</p>
+            <input type="text" id="tweet-input" placeholder="Enter your tweet here...">
+            <button onclick="analyzeSentiment()">Analyze</button>
+            <div id="result"></div>
+            <div id="error-message"></div>
+        </div>
+    
+        <script>
+            function analyzeSentiment() {
+                const tweet = document.getElementById("tweet-input").value;
+                const resultDiv = document.getElementById("result");
+                const errorDiv = document.getElementById("error-message");
+    
+                errorDiv.textContent = ""; // Clear any previous errors
+                resultDiv.innerHTML = "Analyzing..."; // Show loading message
+    
+                if (tweet.trim() === "") {
+                    errorDiv.textContent = "Please enter a tweet.";
+                    resultDiv.innerHTML = "";
+                    return;
+                }
+    
+                // Replace with your actual API endpoint.
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: tweet })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let sentiment = "";
+                    let imageSrc = "";
+                    if (data == 0) { // Assuming 0 is negative
+                        sentiment = "Negative";
+                        imageSrc = "negative.png"; // Replace with your image path
+                    } else if (data == 1) { // Assuming 1 is positive
+                        sentiment = "Positive";
+                        imageSrc = "positive.png"; // Replace with your image path
+                    } else {
+                        sentiment = "Neutral";
+                        imageSrc = "neutral.png"; // Replace with your image path
+                    }
+                    resultDiv.innerHTML = `<p>Sentiment: ${sentiment}</p><img class="sentiment-image" src="${imageSrc}" alt="${sentiment} Sentiment">`;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    errorDiv.textContent = "An error occurred during analysis.";
+                    resultDiv.innerHTML = "";
+                });
+            }
+        </script>
+    </body>
+    </html>

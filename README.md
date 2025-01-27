@@ -2,6 +2,7 @@
 This project analyzes tweets to determine their sentiment as positive, negative, or neutral. The system fetches tweets using the Twitter API, preprocesses the text (removing noise like hashtags, URLs, and special characters), and classifies the sentiment using machine learning or natural language processing (NLP) techniques. The model can be trained using datasets like Sentiment140 and deployed to predict real-time sentiment trends.
 
 CI/CD Pipeline:
+
 Version Control: Use GitHub/GitLab for code management.
 Continuous Integration:
 Automated testing (e.g., unit tests for preprocessing, model validation).
